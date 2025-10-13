@@ -1,0 +1,207 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// ------------ Prisma Setup ------------
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------ Enums ------------
+enum Role {
+  USER
+}
+
+enum BoardRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum TaskStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+  ARCHIVED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum NotificationType {
+  MEMBER_ADDED
+  TASK_ASSIGNED
+  TASK_MOVED
+  SUBTASK_ASSIGNED
+  COMMENT_ADDED
+}
+
+// ------------ Core Models ------------
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String?
+  email    String  @unique
+  password String
+  role     Role    @default(USER)
+  enabled  Boolean @default(true)
+
+  // relations
+  boardsOwned   Board[]        @relation("BoardOwner")
+  memberships   BoardMember[]
+  assignments   TaskAssignee[]
+  notifications Notification[]
+
+  createdTasks    Task[]   @relation("TaskCreatedBy")
+  acceptedInvites Invite[] @relation("InviteAcceptedBy")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Board {
+  id            Int            @id @default(autoincrement())
+  name          String
+  owner         User           @relation("BoardOwner", fields: [ownerId], references: [id])
+  ownerId       Int
+  members       BoardMember[]
+  columns       Column[]
+  tags          Tag[]
+  invites       Invite[]
+  tasks         Task[]
+  notifications Notification[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model BoardMember {
+  id      Int       @id @default(autoincrement())
+  board   Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId Int
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  Int
+  role    BoardRole @default(MEMBER)
+  addedAt DateTime  @default(now())
+
+  @@unique([boardId, userId])
+}
+
+model Column {
+  id        Int      @id @default(autoincrement())
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId   Int
+  name      String
+  position  Int      @default(0)
+  tasks     Task[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId, position])
+}
+
+model Task {
+  id          Int            @id @default(autoincrement())
+  board       Board          @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId     Int
+  column      Column         @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  columnId    Int
+  title       String
+  description String?
+  status      TaskStatus     @default(OPEN)
+  priority    TaskPriority?
+  dueDate     DateTime?
+  position    Int            @default(0)
+  createdBy   User?          @relation("TaskCreatedBy", fields: [createdById], references: [id])
+  createdById Int?
+  assignees   TaskAssignee[]
+  tags        TaskTag[]
+  subtasks    Subtask[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([columnId, position])
+}
+
+model TaskAssignee {
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  assignedAt DateTime @default(now())
+
+  @@id([taskId, userId])
+}
+
+// ------------ Tags (Optional) ------------
+model Tag {
+  id      Int       @id @default(autoincrement())
+  board   Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId Int
+  name    String
+  color   String?
+  tasks   TaskTag[]
+
+  @@unique([boardId, name])
+}
+
+model TaskTag {
+  task   Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId Int
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  Int
+
+  @@id([taskId, tagId])
+}
+
+// ------------ Subtasks (Optional) ------------
+model Subtask {
+  id        Int      @id @default(autoincrement())
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    Int
+  title     String
+  isDone    Boolean  @default(false)
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId, position])
+}
+
+// ------------ Invites & Notifications ------------
+model Invite {
+  id           Int       @id @default(autoincrement())
+  board        Board     @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId      Int
+  email        String
+  token        String    @unique
+  role         BoardRole @default(MEMBER)
+  expiresAt    DateTime?
+  acceptedBy   User?     @relation("InviteAcceptedBy", fields: [acceptedById], references: [id])
+  acceptedById Int?
+  createdAt    DateTime  @default(now())
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  board     Board?           @relation(fields: [boardId], references: [id])
+  boardId   Int?
+  type      NotificationType
+  message   String
+  payload   Json?
+  event     String?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, read, createdAt])
+}

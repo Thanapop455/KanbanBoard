@@ -1,0 +1,17 @@
+## 🧰 Tech Stack
+
+### Backend
+- **Node.js + Express.js** — RESTful API server
+- **Prisma ORM + MySQL** — Database access and schema modeling
+- **JWT Authentication** — Secure login system with role-based access
+- **Socket.io (Planned)** — Real-time collaboration (optional feature)
+//ผมนั่งทำไปสักพักผมนึกได้ว่าไม่ทำโค้ดให้เป็นแบบRealtime เลยติดตั้งไว้ว่าจะมานั่งแก้ทีหลังแต่ไม่น่าจะทัน//
+
+### Frontend
+- **React.js + Vite** — Component-based UI
+- **TailwindCSS** — Utility-first CSS framework for fast styling
+- **Zustand** — Lightweight state management (persisted store)
+- **Axios** — API communication layer (modularized under `/api`)
+- **SweetAlert2** — Modern popup/dialog for UX consistency
+- **React-Toastify** — Non-blocking notification system
+- **@hello-pangea/dnd** — Drag and Drop for reordering Columns/Tasks

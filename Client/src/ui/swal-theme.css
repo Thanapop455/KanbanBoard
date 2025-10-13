@@ -1,0 +1,75 @@
+/* ===== SweetAlert2 – Dark Theme (single source of truth) ===== */
+:root{
+  --sw-bg:#1e293b;        /* popup bg */
+  --sw-fg:#e2e8f0;        /* text */
+  --sw-muted:#94a3b8;     /* hint */
+  --sw-card:#0b1220;      /* input bg */
+  --sw-border:#334155;    /* borders */
+  --sw-ring:rgba(99,102,241,.25);
+  --sw-indigo:#6366f1;
+  --sw-confirm:#3730a3;
+  --sw-cancel:#475569;
+}
+
+/* Popup + buttons */
+.sw-dark-popup{ background:var(--sw-bg)!important; color:var(--sw-fg)!important; }
+.sw-btn-confirm,.sw-btn-cancel{ border-radius:10px; padding:10px 18px!important; font-weight:600; }
+.sw-btn-confirm{ background:var(--sw-confirm)!important; color:#fff!important; }
+.sw-btn-confirm:hover{ filter:brightness(1.05); }
+.sw-btn-cancel{ background:var(--sw-cancel)!important; color:var(--sw-fg)!important; }
+.swal2-actions{ gap:12px!important; justify-content:center!important;}
+
+/* Validation */
+.sw-validate{
+  background:#7f1d1d!important; color:#fef2f2!important; border:1px solid #b91c1c;
+  border-radius:8px; padding:10px 14px!important; font-weight:600;
+}
+
+/* Form block helpers */
+.sw-form{ display:flex; flex-direction:column; gap:14px; text-align:left; }
+.sw-field{ display:flex; flex-direction:column; gap:6px; }
+.sw-label{ font-weight:700; color:var(--sw-fg); }
+.sw-hint{ font-size:12px; color:var(--sw-muted); }
+.sw-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* Base control */
+.sw-ctl{
+  width:100%!important; box-sizing:border-box; border-radius:10px!important;
+  background:var(--sw-card)!important; color:var(--sw-fg)!important;
+  border:1px solid var(--sw-border)!important; padding:12px 14px!important; font-size:15px!important;
+  transition:box-shadow .2s, border-color .2s;
+}
+.sw-ctl:focus{ outline:none!important; border-color:var(--sw-indigo)!important; box-shadow:0 0 0 3px var(--sw-ring)!important; }
+.sw-ctl.textarea{ min-height:120px; resize:vertical; }
+.sw-ctl.select{ appearance:none; cursor:pointer; }
+.sw-ctl.date::-webkit-calendar-picker-indicator{ filter:invert(1); opacity:.8; }
+
+/* Title */
+.swal2-title{ font-size:28px!important; letter-spacing:.3px; }
+
+/* ===================== SELECT (native dropdown) ===================== */
+/* ตัวกล่อง select */
+.swal2-container .swal2-select{
+  background:#0b1220!important; color:#e2e8f0!important;
+  border:1px solid #334155!important; border-radius:10px!important;
+  padding:12px 14px!important; font-size:15px!important; outline:none!important;
+}
+.swal2-container .swal2-select:focus{ border-color:#6366f1!important; box-shadow:0 0 0 3px rgba(99,102,241,.25)!important; }
+
+/* รายการใน dropdown (ให้คงสีเดียวกันทุกแถว) */
+.swal2-container .swal2-select option{
+  background:#111827!important;   /* เทาเข้ม */
+  color:#e5e7eb!important;        /* เทาอ่อน */
+}
+
+/* เฉพาะรายการที่ "ถูกเลือก" เท่านั้นที่ต่างสีเล็กน้อย */
+.swal2-container .swal2-select option:checked,
+.swal2-container .swal2-select:focus option:checked{
+  background:#1f2937!important;
+  color:#e5e7eb!important;
+}
+
+/* สกรอลบาร์ให้เข้าธีม (Chromium) */
+.swal2-container .swal2-select::-webkit-scrollbar{ width:10px; }
+.swal2-container .swal2-select::-webkit-scrollbar-thumb{ background:#374151; border-radius:8px; }
+.swal2-container .swal2-select::-webkit-scrollbar-track{ background:#111827; }
