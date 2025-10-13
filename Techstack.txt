@@ -15,3 +15,5 @@
 - **SweetAlert2** — Modern popup/dialog for UX consistency
 - **React-Toastify** — Non-blocking notification system
 - **@hello-pangea/dnd** — Drag and Drop for reordering Columns/Tasks
+- **Zod + zodResolver -Schema-based form validation integrated with React Hook Form
+- **zxcvbn — Real-time password strength estimation
