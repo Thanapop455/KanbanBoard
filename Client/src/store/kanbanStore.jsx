@@ -1,5 +1,5 @@
 // import axios from "axios";
-import { api } from "../../api/client";
+import { api } from "../api/client";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { listBoards } from "../api/board";
