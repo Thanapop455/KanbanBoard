@@ -1,5 +1,7 @@
 import axios from "axios";
-const API = "http://localhost:5001/api";
+// const API = "http://localhost:5001/api";
+export const API =
+  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "http://localhost:5001";
 
 // List tasks (with filter)
 export const listTasks = async (token, boardId, params = {}) =>

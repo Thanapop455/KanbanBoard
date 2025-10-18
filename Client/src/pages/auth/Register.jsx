@@ -39,7 +39,7 @@ const Register = () => {
 
   const onSubmit = async (form) => {
     try {
-      await axios.post("http://localhost:5001/api/register", {
+      await axios.post("https://kanbanboard-nsud.onrender.com/api/register", {
         email: form.email,
         password: form.password,
       });

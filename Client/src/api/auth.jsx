@@ -1,6 +1,8 @@
 import axios from 'axios'
-const API = "http://localhost:5001/api";
-
+// const API = "http://localhost:5001/api";
+export const API =
+  (import.meta.env.VITE_API_URL?.replace(/\/$/, "")) || "http://localhost:5001";
+  
 export const currentUser = async (token) => await axios.post(`${API}/current-user`, {}, {
     headers: {
         Authorization: `Bearer ${token}`
