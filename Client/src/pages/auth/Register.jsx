@@ -7,7 +7,7 @@ import zxcvbn from "zxcvbn";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, UserPlus } from "lucide-react";
-import { api } from "../api/client";
+import { api } from "../../api/client";
 
 const registerSchema = z
   .object({
