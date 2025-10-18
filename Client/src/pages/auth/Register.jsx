@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +7,7 @@ import zxcvbn from "zxcvbn";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, UserPlus } from "lucide-react";
+import { api } from "../api/client";
 
 const registerSchema = z
   .object({
@@ -39,7 +40,7 @@ const Register = () => {
 
   const onSubmit = async (form) => {
     try {
-      await axios.post("https://kanbanboard-nsud.onrender.com/api/register", {
+      await api.post("/register", {
         email: form.email,
         password: form.password,
       });

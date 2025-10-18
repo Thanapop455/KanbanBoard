@@ -1,4 +1,5 @@
-import axios from "axios";
+// import axios from "axios";
+import { api } from "../api/client";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { listBoards } from "../api/board";
@@ -18,7 +19,8 @@ const kanbanStore = (set, get) => ({
   },
 
   actionLogin: async (form) => {
-    const res = await axios.post("https://kanbanboard-nsud.onrender.com/api/login", form);
+    // const res = await axios.post("http://localhost:5001/api/login", form);
+    const res = await api.post("/login", form);
     set({ user: res.data.payload, token: res.data.token });
     return res;
   },

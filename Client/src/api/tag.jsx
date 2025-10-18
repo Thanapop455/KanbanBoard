@@ -1,5 +1,6 @@
 import axios from "axios";
-const API = "http://localhost:5001/api";
+// const API = "http://localhost:5001/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
 
 // List tags in board
 export const listTags = async (token, boardId) =>
