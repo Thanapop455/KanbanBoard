@@ -19,7 +19,7 @@ readdirSync('./routes')
     
 // app.listen(5001,
 //     () => console.log('Server running port 5001'))
-1
+
 const PORT = process.env.PORT || 5001;
 // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
